@@ -2,15 +2,13 @@ import React, {Component} from 'react';
 import StartUpPage from './Component/Login/StartUpPage'
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
-import signUpReducer from './src/reducers/signUpReducer';
-
-const  store = createStore(signUpReducer);
-
+import Store from './src/store';
+import Product from './Component/addProducts/AddProduct';
 export default class App extends Component{
     render(){
         return(
-            <Provider store={store}>
-            <StartUpPage></StartUpPage>
+            <Provider store={Store}>
+            <Product></Product>
             </Provider>
         );
     }

@@ -3,12 +3,25 @@ export default (state = {} , action) => {
         case 'login':
           return{
             ...state,
-            isRequesting : false
+            isRequesting : false,
+            message : action.message,
+            body : action.body
           }
         case 'loginFailed':
           return{
             ...state,
-            isRequesting : true
+            isRequesting : true,
+            message : action.message,
           }  
+        case 'loginShutter':
+          return {...state,
+          loginShutter : action.payload 
+          };
+        default : 
+            return {
+              ...state,
+              payload : 'message'
+            };
+
     }
 } 

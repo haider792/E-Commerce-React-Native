@@ -20,7 +20,7 @@ import {connect} from 'react-redux';
 import type {PanResponderInstance, GestureState} from 'PanResponder';
 import type {PressEvent} from 'CoreEventTypes';
 import Dimensions from 'Dimensions';
-import {signUpAction,loginShutter,signUpShutter} from '../../src/actions';
+import {signUpAction,loginShutter,signUpShutter,products} from '../../src/actions';
 const DEVICE_WIDTH = Dimensions.get('window').width;
 const DEVICE_HEIGHT = Dimensions.get('window').height;
 
@@ -56,7 +56,10 @@ class SignUp extends React.Component<Props> {
       this.state= {
           changeView : false,
           changeAnimatedView : false,
-          margin : DEVICE_WIDTH / 2 
+          margin : DEVICE_WIDTH / 2,
+          name : 'empty',
+          email : 'empty',
+          password : 'empty' 
       }
   }
   _handleMoveShouldSetPanResponder = (
@@ -318,18 +321,33 @@ class SignUp extends React.Component<Props> {
                 placeholder = "Name"
                 autoCorrect = {true}
                 maxLength = {20}
+                onChangeText = {value => {
+                  this.setState({
+                    name : value
+                  })
+                }}
             >
             </Input>
             <Input
                 placeholder = "Email"
                 autoCorrect = {true}
                 maxLength = {20}
+                onChangeText = {value => {
+                  this.setState({
+                    email : value
+                  })
+                }}
             >
             </Input>
             <Input
                 placeholder = "*********"
                 autoCorrect = {true}
                 maxLength = {20}
+                onChangeText = {value => {
+                  this.setState({
+                    password : value
+                  })
+                }}
             >
             </Input>
             <Input
@@ -338,14 +356,13 @@ class SignUp extends React.Component<Props> {
                 maxLength = {20}
             >
             </Input>
-            <TouchableOpacity onPress={()=>{
-                          this.props.signUpAction('message working');
-                          alert("working");
-                    }}>
+            <TouchableOpacity onPress={() => 
+                          this.props.signUpAction(this.state.email,this.state.name,this.state.password)
+                    }>
                       <Text>Login</Text>
             </TouchableOpacity>
 
-                  <Text>{this.props.count.payload}</Text>
+                  <Text>{this.props.count.message}</Text>
             </Animated.View>
         </Animated.View>
     }
@@ -387,9 +404,9 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state){
   return{
-    count : state
+    count : state.signUp
   }
   }
 
-export default connect(mapStateToProps , {signUpAction,loginShutter,signUpShutter})(SignUp) 
+export default connect(mapStateToProps , {signUpAction,loginShutter,signUpShutter,products})(SignUp) 
 

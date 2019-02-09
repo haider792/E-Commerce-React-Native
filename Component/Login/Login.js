@@ -16,11 +16,12 @@ const {PanResponder, StyleSheet, Text, View , Animated , Image , TouchableOpacit
 import Input from '../../CommonComponents/Input';
 import * as Animatable from 'react-native-animatable';
 // import { Icon } from 'react-native-elements'
+import {withNavigation} from 'react-navigation'
 import {connect} from 'react-redux';
 import type {PanResponderInstance, GestureState} from 'PanResponder';
 import type {PressEvent} from 'CoreEventTypes';
 import Dimensions from 'Dimensions';
-import {signUpAction,loginShutter,signUpShutter} from '../../src/actions';
+import {signUpAction,loginShutter,signUpShutter,loginAction} from '../../src/actions';
 const DEVICE_WIDTH = Dimensions.get('window').width;
 const DEVICE_HEIGHT = Dimensions.get('window').height;
 
@@ -70,7 +71,7 @@ class Login extends React.Component<Props> {
     event: PressEvent,
     gestureState: GestureState,
   ) => {
-    this.props.loginShutter(false);
+    this.props.loginShutter("true");
     this._highlight();
   };
 
@@ -263,7 +264,7 @@ class Login extends React.Component<Props> {
       >
        { this.state.changeView == false ? <Animated.View style={{opacity : extOpacity}}>
         <View style = {{alignItems : 'center' }}>
-        <Text>SignUp</Text>
+        <Text>Login</Text>
         </View>
         </Animated.View> :
 
@@ -277,15 +278,25 @@ class Login extends React.Component<Props> {
             <Text style={{fontSize : 50}}>LOGIN</Text>
             </View>
             <Input
-                placeholder = "Enter the Name"
+                placeholder = "Enter the Email"
                 autoCorrect = {true}
                 maxLength = {20}
+                onChangeText = {text => {
+                  this.setState({
+                    email : text
+                  })
+                }}
             >
             </Input>
             <Input
-                placeholder = "Enter the Name"
+                placeholder = "Enter the password"
                 autoCorrect = {true}
                 maxLength = {20}
+                onChangeText = {text => {
+                  this.setState({
+                    passsword : text
+                  })
+                }}
             >
             </Input>
         </Animated.View>
@@ -310,40 +321,42 @@ class Login extends React.Component<Props> {
                 </Animated.View>
                 <Animated.View style={{flex : 3 , alignItems : 'center'}}>
                    <Animated.View style={{marginBottom : 50}}>
-            <Text style={{fontSize : 50}}>SIGN UP</Text>
+            <Text style={{fontSize : 50}}>Log In</Text>
             </Animated.View>
             <Input
-                placeholder = "Name"
+                placeholder = "Enter the Email"
                 autoCorrect = {true}
                 maxLength = {20}
+                onChangeText = {text => {
+                  this.setState({
+                    email : text
+                  })
+                }}
             >
             </Input>
             <Input
-                placeholder = "Email"
+                placeholder = "Enter the password"
                 autoCorrect = {true}
                 maxLength = {20}
-            >
-            </Input>
-            <Input
-                placeholder = "*********"
-                autoCorrect = {true}
-                maxLength = {20}
-            >
-            </Input>
-            <Input
-                placeholder = "confirm password"
-                autoCorrect = {true}
-                maxLength = {20}
+                onChangeText = {text => {
+                  this.setState({
+                    password : text
+                  })
+                }}
             >
             </Input>
             <TouchableOpacity onPress={()=>{
-                          this.props.signUpAction('message working');
-                          alert("working");
-                    }}>
-                      <Text>Login</Text>
-            </TouchableOpacity>
+                          // this.props.loginAction(this.state.email,this.state.password);
+                          // alert("working");
+                         
+                          this.props.navigation.navigate('product')
 
-                  <Text>{this.props.count.loginShutter}</Text>
+                    }}>
+            <Text>Login</Text>
+            </TouchableOpacity>
+            <Text>{this.props.count.message}</Text>
+            <Text>{this.props.count.body}</Text>
+            
             </Animated.View>
         </Animated.View>
     }
@@ -385,9 +398,9 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state){
   return{
-    count : state
+    count : state.login
   }
   }
 
-export default connect(mapStateToProps , {signUpAction,loginShutter,signUpShutter})(Login) 
+export default connect(mapStateToProps , {loginAction,signUpAction,loginShutter,signUpShutter})(Login) 
 

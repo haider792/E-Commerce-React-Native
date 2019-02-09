@@ -3,19 +3,18 @@ export default (state = {} , action) => {
         case 'signUp':
           return {
             ...state,
-            payload : action.payload
+            payload : action.payload,
+            message : 'Successfully Entered Thank you'
           };   
         case 'signUpFailed':
-          return {...state,
-          payload : "failed"
-          };
-        case 'loginShutter':
-          return {...state,
-          loginShutter : action.payload 
+          return {
+            ...state,
+            payload : action.message
           };
         case 'signUpShutter':
-          return {...state,
-          signUpShutter : action.payload
+          return {
+            ...state,
+            signUpShutter : action.payload
           };    
         default : 
             return {

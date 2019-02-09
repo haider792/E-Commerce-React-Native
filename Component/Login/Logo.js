@@ -12,6 +12,12 @@ import Dimensions from 'Dimensions';
 const DEVICE_WIDTH = Dimensions.get('window').width;
 const DEVICE_HEIGHT = Dimensions.get('window').height;
 
+const FBSDK = require('react-native-fbsdk')
+const {
+  AccessToken,
+  LoginManager,
+} = FBSDK
+
 
 export default class Logo extends Component {
 
@@ -283,6 +289,25 @@ export default class Logo extends Component {
     
   }
 
+  loginFacebook = () => {
+    var self = this
+    LoginManager.logOut()
+    LoginManager.logInWithReadPermissions(['public_profile', 'email']).then(
+      function (result) {
+        if (result.isCancelled) {
+          //alert('Login was cancelled');
+        } else {
+          AccessToken.getCurrentAccessToken().then(
+            (data) => {
+              alert(working);            }
+          )
+        }
+      }, function (error) {
+        alert('Login failed with error: ' + error);
+      }
+    );
+  }
+
 
 
   render() {
@@ -298,7 +323,7 @@ export default class Logo extends Component {
       style={styles.container}>
 
       <Animated.View style={[{position : 'absolute'},{ translateY: this.translateY }, {translateX: this.translateX}]}>
-      <TouchableOpacity >
+      <TouchableOpacity onPress={() => this.loginFacebook()}>
       <Image source={facebook} style={{width : 30 , height : 30}} />
       </TouchableOpacity>
       </Animated.View>
